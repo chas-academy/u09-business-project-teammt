@@ -1,27 +1,29 @@
-
 const mongoose = require('mongoose');
 
 const RecipeSchema = new mongoose.Schema({
-   id: String ,
-   name: String ,
-   image: String
+  id: String,
+  title: String,
+  image: String,
 });
 
-const CookBookSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
+const CookBookSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    recipes: {
+      type: [RecipeSchema],
+    },
   },
-  description: {
-    type: [String],
-    required: true,
-  },
-  recipes: {
-    type : [RecipeSchema],
-  }
-  }, {timestamps: true});
+  { timestamps: true }
+);
 
-  module.exports = mongoose.model('CookBook', CookBookSchema);
+module.exports = mongoose.model('CookBook', CookBookSchema);
 
 /* 
   {
@@ -42,5 +44,3 @@ const CookBookSchema = new mongoose.Schema({
 
     ]
   } */
-
-
