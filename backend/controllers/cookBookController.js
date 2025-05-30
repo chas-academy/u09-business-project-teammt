@@ -17,13 +17,9 @@ const createCookBook = async (req, res) => {
   });
 };
 
-
-
-
-
 const updateCookBook = async (req, res) => {
   console.log(req.body);
-// first we check if cookbook exists
+  // first we check if cookbook exists
   const cookBookToUpdate = await CookBook.findById(req.params.id);
   if (!cookBookToUpdate) {
     res.status(400).json({
@@ -32,67 +28,52 @@ const updateCookBook = async (req, res) => {
   }
 
   // if operation is ok
-  if(req.body.operation == 'add'){
-   const recipeExist=cookBookToUpdate.recipes.some(r=>r.id == req.body.recipe.id);
-   if(recipeExist){
-    res.status(400).json({
-      error: 'recipe is already in the cookbook',
-    });
-   }
+  if (req.body.operation == 'add') {
+    const recipeExist = cookBookToUpdate.recipes.some((r) => r.id == req.body.recipe.id);
+    if (recipeExist) {
+      res.status(400).json({
+        error: 'recipe is already in the cookbook',
+      });
+    }
     cookBookToUpdate.recipes.push(req.body.recipe);
 
     const savedCookBook = await cookBookToUpdate.save();
 
     res.status(200).json({
-        message: 'Recipe added successfully',
-        cookbook: savedCookBook
+      message: 'Recipe added successfully',
+      cookbook: savedCookBook,
+    });
+  } else if (req.body.operation == 'remove') {
+    const recipeExists = cookBookToUpdate.recipes.some((r) => r.id === req.body.recipe.id);
+    if (!recipeExists) {
+      return res.status(400).json({
+        error: 'recipe not found in cookbook',
       });
+    }
 
+    cookBookToUpdate.recipes = cookBookToUpdate.recipes.filter((r) => r.id !== req.body.recipe.id);
+    const savedCookBook = await cookBookToUpdate.save();
 
-
-
-  }else if (req.body.operation == 'remove'){
-
-    // check if in this conatins.. if not error
-    //if cookBookToUpdate.recipts filter..return all except id in request = new list without this item 
-    // cookBookToUpdate.recipts = new list
-    // cookBookToUpdate.save
-
-
-  }else{
-  res.status(400).json({
+    return res.status(200).json({
+      message: 'Recipe removed successfully',
+      cookbook: savedCookBook,
+    });
+  } else {
+    res.status(400).json({
       error: 'operation should be add or remove',
     });
   }
-
-
-
-
 
   res.status(200).json({
     message: 'update cook book called',
   });
 };
 
-
-
-
-
-
-
-
 const deleteCookBook = async (req, res) => {
   res.status(200).json({
     message: 'delete cook book called',
   });
 };
-
-
-
-
-
-
-
 
 const getOneCookBook = async (req, res) => {
   console.log(req.params.id);

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-
+//reusable schema for individual recipes//
 const RecipeSchema = new mongoose.Schema({
   id: String,
   title: String,
   image: String,
 });
-
+//main schema for a cookbook
 const CookBookSchema = new mongoose.Schema(
   {
     title: {
