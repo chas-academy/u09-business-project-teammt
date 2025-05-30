@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
+
+dotenv.config();
 async function connectDB() {
   try {
     await mongoose.connect(
-      'mongodb+srv://dbUser:dbPassword786@u09-cookbook.koje8nx.mongodb.net/?retryWrites=true&w=majority&appName=u09-CookBook'
+      process.env.MONGO_URL
     );
     console.log('connected');
   } catch (error) {
