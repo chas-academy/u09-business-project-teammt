@@ -70,6 +70,14 @@ const updateCookBook = async (req, res) => {
 };
 
 const deleteCookBook = async (req, res) => {
+
+   const cookBookToDelete = await CookBook.findById(req.params.id);
+  if (!cookBookToDelete) {
+    res.status(400).json({
+      error: 'unable to find cookbook, confirm id',
+    });
+  }
+  await cookBookToDelete.deleteOne();
   res.status(200).json({
     message: 'delete cook book called',
   });
