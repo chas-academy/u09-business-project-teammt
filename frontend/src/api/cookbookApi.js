@@ -6,4 +6,19 @@ export const cookbookApi = {
     const data = await response.json();
     return data.cookbooks; // Extract just the cookbooks array
   },
+  async update(cookbookId, data) {
+    const response = await fetch(`${BASE_URL}/cookbook/${cookbookId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  },
+
+  async delete(cookbookId) {
+    const response = await fetch(`${BASE_URL}/cookbook/${cookbookId}`, {
+      method: 'DELETE'
+    });
+    return response.json();
+  },
 };

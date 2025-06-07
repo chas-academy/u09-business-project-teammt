@@ -22,13 +22,13 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   border: 1px solid #e0e0e0;
   transition: box-shadow 0.2s;
 }
 
 .cookbook-card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 15%);
   cursor: pointer;
 }
 
@@ -82,7 +82,7 @@
 
 .search-section {
   max-width: 600px;
-  margin: 0 auto 30px auto;
+  margin: 0 auto 30px;
   text-align: center;
 }
 
