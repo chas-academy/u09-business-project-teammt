@@ -17,7 +17,15 @@ export const cookbookApi = {
 
   async delete(cookbookId) {
     const response = await fetch(`${BASE_URL}/cookbook/${cookbookId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+    });
+    return response.json();
+  },
+  async create(cookbookData) {
+    const response = await fetch(`${BASE_URL}/cookbook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cookbookData),
     });
     return response.json();
   },

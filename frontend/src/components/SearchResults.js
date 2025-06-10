@@ -6,25 +6,27 @@ const SearchResult = ({ recipe, cookbooklist, refrashFun }) => {
 
   async function handleAdd() {
     if (!selectedCookbookId) return;
-    const recipeData = {
-      operation: 'add',
-      recipe: { id: recipe.id.toString(), title: recipe.title, image: recipe.image },
-    };
 
-    await cookbookApi.update(selectedCookbookId, recipeData);
-    setSelectedCookbookId(''); // Reset selection
-    refrashFun();
-    alert('Recipe added successfully!');
+    try {
+      const recipeData = {
+        operation: 'add',
+        recipe: { id: recipe.id.toString(), title: recipe.title, image: recipe.image },
+      };
+
+      await cookbookApi.update(selectedCookbookId, recipeData);
+      setSelectedCookbookId('');
+      refrashFun();
+      alert('Recipe added successfully!');
+    } catch (err) {
+      console.log('Add failed:', err.message);
+      alert('Failed to add recipe');
+    }
   }
 
   return (
     <div className="recipe">
       <h4 className="recipe-title">{recipe.title}</h4>
-      <img
-        src={recipe.image} // Fixed: was recipe.Image (uppercase I)
-        alt={recipe.title}
-        className="recipe-image"
-      />
+      <img src={recipe.image} alt={recipe.title} className="recipe-image" />
       <div className="add-to-cookbook">
         <select
           value={selectedCookbookId}
@@ -43,4 +45,5 @@ const SearchResult = ({ recipe, cookbooklist, refrashFun }) => {
     </div>
   );
 };
+
 export default SearchResult;

@@ -1,10 +1,48 @@
-/* App.css - Replace your existing CSS with this */
-
 .App {
   text-align: center;
   background-color: #f5f5f5;
   min-height: 100vh;
   padding: 20px;
+}
+
+/* Search Section */
+.search-section {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.search-input {
+  width: 70%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.search-button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* Add Cookbook Section */
+.cookbook-add {
+  margin: 20px 0;
 }
 
 /* Grid for cookbooks */
@@ -24,19 +62,21 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   border: 1px solid #e0e0e0;
-  transition: box-shadow 0.2s;
+  position: relative;
 }
 
-.cookbook-card:hover {
-  box-shadow: 0 4px 8px rgb(0 0 0 / 15%);
-  cursor: pointer;
+.cookbook-card > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .cookbook-title {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .cookbook-description {
@@ -64,67 +104,194 @@
   padding: 10px;
   border-radius: 4px;
   margin: 8px 0;
+  position: relative;
 }
 
 .recipe-title {
   font-size: 14px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
+/* Square images - fully visible */
 .recipe-image {
   width: 100%;
-  height: 120px;
+  height: 200px;
   object-fit: cover;
   border-radius: 4px;
+  display: block;
 }
 
-.search-section {
-  max-width: 600px;
-  margin: 0 auto 30px;
-  text-align: center;
-}
-
-.search-section h2 {
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.search-box {
+/* Remove button styling */
+.remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.search-input {
+.remove-button:hover {
+  background-color: #c82333;
+}
+
+/* Add to cookbook styling */
+.add-to-cookbook {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cookbook-select {
   flex: 1;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.add-to-cookbook button {
+  padding: 6px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-to-cookbook button:hover {
+  background-color: #1e7e34;
+}
+
+.recipe-details-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.recipe-details-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.cookbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
 }
 
-.search-input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #007bff;
+  box-shadow: 0 0 0 2px rgb(0 123 255 / 25%);
 }
 
-.search-button {
-  padding: 12px 20px;
-  background-color: #007bff;
-  color: white;
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.form-actions button {
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
 }
 
-.search-button:hover {
-  background-color: #0056b3;
+.form-actions button[type='button'] {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
 }
 
-.search-button:disabled {
-  background-color: #ccc;
+.form-actions button[type='submit'] {
+  background: #007bff;
+  color: white;
+}
+
+.form-actions button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+}
+
+.add-cookbook-button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-cookbook-button:hover {
+  background: #218838;
 }
