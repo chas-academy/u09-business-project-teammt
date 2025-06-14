@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/create-session-test', (req, res) => {
-  req.session.testData = 'hello world';
+  (req.session as any).testData = 'hello world';
   res.json({
     message: 'Session created',
     sessionID: req.sessionID,
