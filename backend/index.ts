@@ -44,7 +44,7 @@ app.get('/create-session-test', (req, res) => {
   res.json({
     message: 'Session created',
     sessionID: req.sessionID,
-    testData: req.session.testData
+    testData: (req.session as any).testData
   });
 });
 app.get('/debug-config', (req, res) => {
