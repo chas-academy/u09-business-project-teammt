@@ -1,11 +1,11 @@
 import express from 'express';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';  // ← ADD THIS IMPORT
 import cors from 'cors';
 import passport from './config/passport';
 import connectDB from './db.js';
 import cbRoutes from './routes/cookBookRoutes';
 import authRoute from './routes/authRoutes';
-import MongoStore from 'connect-mongo';
 
 const app = express();
 const port = 3000;
@@ -24,13 +24,13 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-     mongoUrl: (process.env.MONGO_URL as string);
-    }),
+    mongoUrl: process.env.MONGO_URL as string  // ← CHANGED ; TO COMMA
+  }),
   cookie: {
     sameSite: 'none' as const,
-   secure: true,
-   httpOnly: false,
-   maxAge: 24 * 60 * 60 * 1000
+    secure: true,
+    httpOnly: false,
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
@@ -41,8 +41,6 @@ app.get('/', (req, res) => {
   res.send('hello express!');
 });
 
-
-
 app.get('/create-session-test', (req, res) => {
   (req.session as any).testData = 'hello world';
   res.json({
@@ -51,6 +49,7 @@ app.get('/create-session-test', (req, res) => {
     testData: (req.session as any).testData
   });
 });
+
 app.get('/debug-config', (req, res) => {
   res.json({
     sessionConfig: {
@@ -68,7 +67,7 @@ app.get('/test-cookie-settings', (req, res) => {
   res.cookie('test-cookie', 'test-value', {
     sameSite: 'none' as const,
     secure: true,
-    httpOnly: false, // So you can see it in DevTools
+    httpOnly: false,
     maxAge: 24 * 60 * 60 * 1000
   });
   res.json({ message: 'Test cookie set with sameSite: none, secure: true' });
@@ -82,7 +81,6 @@ app.get('/reset-session', (req, res) => {
 });
 
 app.get('/debug-sessions', (req, res) => {
-  const store = req.sessionStore;
   res.json({
     currentSessionID: req.sessionID,
     hasSession: !!req.session,
