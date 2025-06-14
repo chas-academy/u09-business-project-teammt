@@ -3,7 +3,7 @@ const BASE_URL = `${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/api
 export const cookbookApi = {
   async getAll() {
     const response = await fetch(`${BASE_URL}/cookbook`, {
-      credentials: 'include'
+      credentials: 'include',
     });
 
     if (!response.ok) {

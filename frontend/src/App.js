@@ -35,48 +35,45 @@ function App() {
 
   const fetchUser = async () => {
     try {
-     const authToken = localStorage.getItem('authToken');
-    const baseUrl = process.env.REACT_APP_BE_URL || 'http://localhost:3000';
-        const fullUrl = `${baseUrl}/auth/user`;
+      const authToken = localStorage.getItem('authToken');
+      const baseUrl = process.env.REACT_APP_BE_URL || 'http://localhost:3000';
+      const fullUrl = `${baseUrl}/auth/user`;
 
-
-
-       const res = await fetch(`${baseUrl}/auth/verify-token`, {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ token: authToken })
-           });
-           const data = await res.json();
+      const res = await fetch(`${baseUrl}/auth/verify-token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken }),
+      });
+      const data = await res.json();
       setUser(data);
     } catch (error) {
       console.log('Error fetching user:', error);
       setUser(null);
     } finally {
-       console.log(user)
+      console.log(user);
       setLoading(false);
     }
   };
 
   const login = () => {
-    window.open(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/google`, "_self");
+    window.open(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/google`, '_self');
   };
 
   const logout = async () => {
-     try {
-        // Clear backend session
-        await fetch(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/logout`, {
-          credentials: "include"
-        });
+    try {
+      // Clear backend session
+      await fetch(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/logout`, {
+        credentials: 'include',
+      });
 
-        // Clear local state
-        setUser(null);
-        setCookbooks([]);
-        setSearchResults([]);
-        setSearchQuery('');
-
-      } catch (error) {
-        console.log('Error logging out:', error);
-      }
+      // Clear local state
+      setUser(null);
+      setCookbooks([]);
+      setSearchResults([]);
+      setSearchQuery('');
+    } catch (error) {
+      console.log('Error logging out:', error);
+    }
   };
 
   async function loadAllBooks() {
@@ -87,7 +84,7 @@ function App() {
       setCookbooks(data || []);
     } catch (err) {
       console.log('Error loading cookbooks:', err.message);
-       setCookbooks([]);
+      setCookbooks([]);
     }
   }
 
@@ -119,7 +116,14 @@ function App() {
       {user ? (
         <>
           {/* User is logged in - show full app */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '20px 0',
+            }}
+          >
             <img
               src={user.picture}
               alt="Profile"
@@ -134,7 +138,7 @@ function App() {
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               Logout
@@ -198,7 +202,7 @@ function App() {
               borderRadius: '4px',
               cursor: 'pointer',
               fontSize: '16px',
-              fontWeight: '500'
+              fontWeight: '500',
             }}
           >
             Login with Google
