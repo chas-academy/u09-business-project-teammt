@@ -40,15 +40,37 @@ router.get(
 );
 
 router.post('/verify-token', async (req, res) => {
-  const { token } = req.body;
-  const session = await req.sessionStore.get(token);
-  if (session && session.passport && session.passport.user) {
-    const user = await User.findById(session.passport.user);
-    res.json(user);
-  } else {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.json(null);
+    }
+
+    // Get session from store using callback
+    req.sessionStore.get(token, async (err: any, session: any) => {
+      if (err || !session) {
+        return res.json(null);
+      }
+
+      if (session && session.passport && session.passport.user) {
+        try {
+          const user = await User.findById(session.passport.user);
+          res.json(user);
+        } catch (dbError) {
+          console.log('Database error:', dbError);
+          res.json(null);
+        }
+      } else {
+        res.json(null);
+      }
+    });
+  } catch (error) {
+    console.log('Token verification error:', error);
     res.json(null);
   }
 });
+
 
 // Get current user
 router.get('/user', (req, res) => {
