@@ -14,22 +14,26 @@ connectDB();
 
 app.use(express.json());
 
-app.use(cors({
-  origin: process.env.FE_URL || 'http://localhost:3001',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.FE_URL || 'http://localhost:3001',
+    credentials: true,
+  })
+);
 
-app.use(session({
-  secret: 'verySecretySecret',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL as string
-  }),
-  cookie: {
-    httpOnly: false
-  }
-}));
+app.use(
+  session({
+    secret: 'verySecretySecret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL as string,
+    }),
+    cookie: {
+      httpOnly: false,
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());

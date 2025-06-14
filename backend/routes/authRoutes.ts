@@ -1,44 +1,49 @@
 import express from 'express';
-import passport from '../config/passport.js';
+import passport from '../config/passport';
 
 const router = express.Router();
 
-// Google OAuth login
-router.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account consent' })
+// Get current user
+router.get('/user', (req, res) => {
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.json(null);
+  }
+});
+
+// Start Google OAuth
+router.get('/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
 );
 
 // Google OAuth callback
-router.get(
-  '/google/callback',
+router.get('/google/callback',
   passport.authenticate('google', {
-    failureRedirect: process.env.FE_URL || 'http://localhost:3001',
+    failureRedirect: process.env.FE_URL || 'http://localhost:3001'
   }),
   (req, res) => {
-    console.log('🔍 OAuth callback hit');
-    console.log('🔍 User:', req.user);
-    console.log('🔍 Session ID:', req.sessionID);
-    console.log('🔍 Session exists:', !!req.session);
+    console.log('✅ OAuth callback successful');
+    console.log('User:', req.user);
+    console.log('Session ID:', req.sessionID);
 
     req.session.save((err) => {
       if (err) {
-        console.log('Session save error:', err);
+        console.log('❌ Session save error:', err);
       } else {
-        console.log('Session saved successfully');
-        res.cookie('connect.sid', `s:${req.sessionID}`, {
-          sameSite: 'none',
-          secure: true,
-          httpOnly: false,
-          maxAge: 24 * 60 * 60 * 1000,
-          domain: '.onrender.com',
-        });
+        console.log('✅ Session saved successfully');
       }
-     res.redirect(`${process.env.FE_URL}?authToken=${authToken}`);
+
+      // Redirect with token in URL
+      const authToken = req.sessionID;
+      res.redirect(`${process.env.FE_URL}?authToken=${authToken}`);
     });
   }
 );
 
+// Add token verification endpoint
 router.post('/verify-token', async (req, res) => {
   try {
     const { token } = req.body;
@@ -55,6 +60,8 @@ router.post('/verify-token', async (req, res) => {
 
       if (session && session.passport && session.passport.user) {
         try {
+          // Import User model dynamically to avoid circular import issues
+          const { User } = await import('../model/user.js');
           const user = await User.findById(session.passport.user);
           res.json(user);
         } catch (dbError) {
@@ -71,30 +78,15 @@ router.post('/verify-token', async (req, res) => {
   }
 });
 
-
-// Get current user
-router.get('/user', (req, res) => {
-  if (req.user) {
-    res.json(req.user);
-  } else {
-    res.json(null);
-  }
-});
-
-
-router.get('/logout', (req, res, next) => {
-  req.logout((err) => {
+// Logout
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
     if (err) {
-      return next(err);
+      console.log('Logout error:', err);
     }
-    req.session.destroy((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.clearCookie('connect.sid');
-      res.json({ success: true, message: 'Logged out successfully' });
-    });
-  }); // ← This closing brace and parenthesis was missing!
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Logged out successfully' });
+  });
 });
 
 export default router;
