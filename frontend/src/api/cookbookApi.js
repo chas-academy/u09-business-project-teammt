@@ -1,9 +1,17 @@
 const BASE_URL = `${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/api/v1`;
 
+const getAuthHeaders = () => {
+  const authToken = localStorage.getItem('authToken');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authToken}` // Send token in header
+  };
+};
+
 export const cookbookApi = {
   async getAll() {
     const response = await fetch(`${BASE_URL}/cookbook`, {
-      credentials: 'include',
+      headers: getAuthHeaders()
     });
 
     if (!response.ok) {
@@ -17,8 +25,7 @@ export const cookbookApi = {
   async update(cookbookId, data) {
     const response = await fetch(`${BASE_URL}/cookbook/${cookbookId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
 
@@ -32,7 +39,7 @@ export const cookbookApi = {
   async delete(cookbookId) {
     const response = await fetch(`${BASE_URL}/cookbook/${cookbookId}`, {
       method: 'DELETE',
-      credentials: 'include',
+      headers: getAuthHeaders()
     });
 
     if (!response.ok) {
@@ -45,8 +52,7 @@ export const cookbookApi = {
   async create(cookbookData) {
     const response = await fetch(`${BASE_URL}/cookbook`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      headers: getAuthHeaders(),
       body: JSON.stringify(cookbookData),
     });
 
