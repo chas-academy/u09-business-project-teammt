@@ -38,6 +38,7 @@ router.get(
     });
   }
 );
+
 router.post('/verify-token', async (req, res) => {
   const { token } = req.body;
   const session = await req.sessionStore.get(token);
