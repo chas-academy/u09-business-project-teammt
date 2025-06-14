@@ -30,8 +30,9 @@ app.use(
       mongoUrl: process.env.MONGO_URL as string, // ← CHANGED ; TO COMMA
     }),
 cookie: {
-  httpOnly: false,
-   sameSite: 'none' as const
+ httpOnly: false,
+   sameSite: 'none' as const,
+   secure: true
 }
   })
 );
