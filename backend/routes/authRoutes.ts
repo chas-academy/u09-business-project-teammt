@@ -13,30 +13,24 @@ router.get('/user', (req, res) => {
 });
 
 // Start Google OAuth
-router.get('/google',
+router.get(
+  '/google',
   passport.authenticate('google', {
-    scope: ['profile', 'email']
+    scope: ['profile', 'email'],
   })
 );
 
 // Google OAuth callback
-router.get('/google/callback',
+router.get(
+  '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: process.env.FE_URL || 'http://localhost:3001'
+    failureRedirect: process.env.FE_URL || 'http://localhost:3001',
   }),
   (req, res) => {
-    console.log('✅ OAuth callback successful');
-    console.log('User:', req.user);
-    console.log('Session ID:', req.sessionID);
-
     req.session.save((err) => {
       if (err) {
-        console.log('❌ Session save error:', err);
-      } else {
-        console.log('✅ Session saved successfully');
+        console.log('Session save error:', err);
       }
-
-      // Redirect with token in URL
       const authToken = req.sessionID;
       res.redirect(`${process.env.FE_URL}?authToken=${authToken}`);
     });
@@ -51,8 +45,6 @@ router.post('/verify-token', async (req, res) => {
     if (!token) {
       return res.json(null);
     }
-
-    // Get session from store using callback
     req.sessionStore.get(token, async (err: any, session: any) => {
       if (err || !session) {
         return res.json(null);
@@ -60,7 +52,6 @@ router.post('/verify-token', async (req, res) => {
 
       if (session && session.passport && session.passport.user) {
         try {
-          // Import User model dynamically to avoid circular import issues
           const { User } = await import('../model/user.js');
           const user = await User.findById(session.passport.user);
           res.json(user);
@@ -78,11 +69,20 @@ router.post('/verify-token', async (req, res) => {
   }
 });
 
-// Logout
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
+  const { token } = req.body;
+
+  if (token) {
+    req.sessionStore.destroy(token, (err: any) => {
+      if (err) {
+        console.log('Session destroy error:', err);
+      }
+    });
+  }
+
   req.session.destroy((err) => {
     if (err) {
-      console.log('Logout error:', err);
+      console.log('Current session destroy error:', err);
     }
     res.clearCookie('connect.sid');
     res.json({ message: 'Logged out successfully' });
