@@ -19,9 +19,15 @@ app.use(cors({
 }));
 
 app.use(session({
-  secret: "verySecretySecret",
+  secret: process.env.SESSION_SECRET || "verySecretySecret",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Add this line
+  }
 }));
 
 app.use(passport.initialize());
