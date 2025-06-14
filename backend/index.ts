@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import MongoStore from 'connect-mongo';  // ← ADD THIS IMPORT
+import MongoStore from 'connect-mongo'; // ← ADD THIS IMPORT
 import cors from 'cors';
 import passport from './config/passport';
 import connectDB from './db.js';
@@ -14,25 +14,23 @@ connectDB();
 
 app.use(express.json());
 
-app.use(cors({
-  origin: process.env.FE_URL || "http://localhost:3001",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.FE_URL || 'http://localhost:3001',
+    credentials: true,
+  })
+);
 
-app.use(session({
-  secret: "verySecretySecret",
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL as string  // ← CHANGED ; TO COMMA
-  }),
-  cookie: {
-    sameSite: 'none' as const,
-    secure: true,
-    httpOnly: false,
-    maxAge: 24 * 60 * 60 * 1000
-  }
-}));
+app.use(
+  session({
+    secret: 'verySecretySecret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL as string, // ← CHANGED ; TO COMMA
+    })
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -46,7 +44,7 @@ app.get('/create-session-test', (req, res) => {
   res.json({
     message: 'Session created',
     sessionID: req.sessionID,
-    testData: (req.session as any).testData
+    testData: (req.session as any).testData,
   });
 });
 
@@ -56,10 +54,10 @@ app.get('/debug-config', (req, res) => {
       sameSite: 'none',
       secure: true,
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000
+      maxAge: 24 * 60 * 60 * 1000,
     },
     environment: process.env.NODE_ENV,
-    frontendUrl: process.env.FE_URL
+    frontendUrl: process.env.FE_URL,
   });
 });
 
@@ -68,7 +66,7 @@ app.get('/test-cookie-settings', (req, res) => {
     sameSite: 'none' as const,
     secure: true,
     httpOnly: false,
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 24 * 60 * 60 * 1000,
   });
   res.json({ message: 'Test cookie set with sameSite: none, secure: true' });
 });
@@ -84,7 +82,7 @@ app.get('/debug-sessions', (req, res) => {
   res.json({
     currentSessionID: req.sessionID,
     hasSession: !!req.session,
-    sessionData: req.session
+    sessionData: req.session,
   });
 });
 

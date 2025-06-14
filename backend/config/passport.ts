@@ -5,32 +5,37 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID as string,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-  callbackURL: `${process.env.BE_URL || 'http://localhost:3000'}/auth/google/callback`
-}, async (accessToken, refreshToken, profile, done) => {
-  try {
-    // Check if user already exists
-    let user = await User.findOne({ googleId: profile.id });
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      callbackURL: `${process.env.BE_URL || 'http://localhost:3000'}/auth/google/callback`,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if user already exists
+        let user = await User.findOne({ googleId: profile.id });
 
-    if (user) {
-      return done(null, user);
+        if (user) {
+          return done(null, user);
+        }
+
+        // Create new user
+        user = await User.create({
+          googleId: profile.id,
+          email: profile.emails?.[0]?.value || '',
+          name: profile.displayName,
+          picture: profile.photos?.[0]?.value || '',
+        });
+
+        return done(null, user);
+      } catch (error) {
+        return done(error, false);
+      }
     }
-
-    // Create new user
-    user = await User.create({
-      googleId: profile.id,
-      email: profile.emails?.[0]?.value || '',
-      name: profile.displayName,
-      picture: profile.photos?.[0]?.value || ''
-    });
-
-    return done(null, user);
-  } catch (error) {
-    return done(error, false);
-  }
-}));
+  )
+);
 
 passport.serializeUser((user: any, done) => {
   done(null, user._id);

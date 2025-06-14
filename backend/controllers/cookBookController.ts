@@ -36,9 +36,9 @@ export const createCookBook = async (req: AuthenticatedRequest, res: Response) =
 
 export const updateCookBook = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const cookBookToUpdate = await CookBook.findOne({ 
-      _id: req.params.id, 
-      userId: req.user.googleId 
+    const cookBookToUpdate = await CookBook.findOne({
+      _id: req.params.id,
+      userId: req.user.googleId,
     });
 
     if (!cookBookToUpdate) {
@@ -62,7 +62,9 @@ export const updateCookBook = async (req: AuthenticatedRequest, res: Response) =
           error: 'recipe not found in cookbook',
         });
       }
-      cookBookToUpdate.recipes = cookBookToUpdate.recipes.filter((r) => r.id !== req.body.recipe.id);
+      cookBookToUpdate.recipes = cookBookToUpdate.recipes.filter(
+        (r) => r.id !== req.body.recipe.id
+      );
     } else {
       return res.status(400).json({
         error: 'operation should be add or remove',
@@ -81,9 +83,9 @@ export const updateCookBook = async (req: AuthenticatedRequest, res: Response) =
 
 export const deleteCookBook = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const cookBookToDelete = await CookBook.findOne({ 
-      _id: req.params.id, 
-      userId: req.user.googleId 
+    const cookBookToDelete = await CookBook.findOne({
+      _id: req.params.id,
+      userId: req.user.googleId,
     });
 
     if (!cookBookToDelete) {
@@ -103,9 +105,9 @@ export const deleteCookBook = async (req: AuthenticatedRequest, res: Response) =
 
 export const getOneCookBook = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const oneCookBook = await CookBook.findOne({ 
-      _id: req.params.id, 
-      userId: req.user.googleId 
+    const oneCookBook = await CookBook.findOne({
+      _id: req.params.id,
+      userId: req.user.googleId,
     });
 
     if (!oneCookBook) {

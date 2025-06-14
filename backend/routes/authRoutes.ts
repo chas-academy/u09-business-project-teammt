@@ -4,35 +4,38 @@ import passport from '../config/passport.js';
 const router = express.Router();
 
 // Google OAuth login
-router.get('/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] ,
-       prompt: 'select_account consent' })
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account consent' })
 );
 
 // Google OAuth callback
-router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: process.env.FE_URL || 'http://localhost:3001' }),
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: process.env.FE_URL || 'http://localhost:3001',
+  }),
   (req, res) => {
-       console.log('🔍 OAuth callback hit');
-          console.log('🔍 User:', req.user);
-          console.log('🔍 Session ID:', req.sessionID);
-          console.log('🔍 Session exists:', !!req.session);
-    // Successful authentication, redirect to frontend
+    console.log('🔍 OAuth callback hit');
+    console.log('🔍 User:', req.user);
+    console.log('🔍 Session ID:', req.sessionID);
+    console.log('🔍 Session exists:', !!req.session);
+
     req.session.save((err) => {
-         if (err) {
-           console.log('❌ Session save error:', err);
-         } else {
-           console.log('✅ Session saved successfully');
-           res.cookie('connect.sid', `s:${req.sessionID}`, {
-                     sameSite: 'none',
-                     secure: true,
-                     httpOnly: false,
-                     maxAge: 24 * 60 * 60 * 1000,
-                     domain: '.onrender.com'  // Allow cross-subdomain
-                   });
-         }
-         res.redirect(process.env.FE_URL || 'http://localhost:3001');
-       });
+      if (err) {
+        console.log('Session save error:', err);
+      } else {
+        console.log('Session saved successfully');
+        res.cookie('connect.sid', `s:${req.sessionID}`, {
+          sameSite: 'none',
+          secure: true,
+          httpOnly: false,
+          maxAge: 24 * 60 * 60 * 1000,
+          domain: '.onrender.com',
+        });
+      }
+      res.redirect(process.env.FE_URL || 'http://localhost:3001');
+    });
   }
 );
 
@@ -44,7 +47,6 @@ router.get('/user', (req, res) => {
     res.json(null);
   }
 });
-
 
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
