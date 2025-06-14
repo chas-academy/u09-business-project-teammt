@@ -5,7 +5,6 @@ import CookBookCard from './components/CookBookCard';
 import AddCookbookModal from './components/AddCookbookModal';
 import { useState, useEffect } from 'react';
 import SearchResult from './components/SearchResults';
-import { User } from '../model/user.js';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -62,16 +61,14 @@ function App() {
 
   const logout = async () => {
     try {
-     const authToken = localStorage.getItem('authToken');
-
-
-         await fetch(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/logout`, {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ token: authToken }),
-           credentials: "include"
-         });
- localStorage.removeItem('authToken');
+      const authToken = localStorage.getItem('authToken');
+      await fetch(`${process.env.REACT_APP_BE_URL || 'http://localhost:3000'}/auth/logout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken }),
+        credentials: 'include',
+      });
+      localStorage.removeItem('authToken');
 
       // Clear local state
       setUser(null);
