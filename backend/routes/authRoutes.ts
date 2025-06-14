@@ -34,10 +34,20 @@ router.get(
           domain: '.onrender.com',
         });
       }
-      res.redirect(process.env.FE_URL || 'http://localhost:3001');
+     res.redirect(`${process.env.FE_URL}?authToken=${authToken}`);
     });
   }
 );
+router.post('/verify-token', async (req, res) => {
+  const { token } = req.body;
+  const session = await req.sessionStore.get(token);
+  if (session && session.passport && session.passport.user) {
+    const user = await User.findById(session.passport.user);
+    res.json(user);
+  } else {
+    res.json(null);
+  }
+});
 
 // Get current user
 router.get('/user', (req, res) => {
@@ -48,19 +58,6 @@ router.get('/user', (req, res) => {
   }
 });
 
-router.get('/check', (req, res) => {
-  if (req.user) {
-    res.json({
-      authenticated: true,
-      user: req.user
-    });
-  } else {
-    res.json({
-      authenticated: false,
-      user: null
-    });
-  }
-});
 
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
