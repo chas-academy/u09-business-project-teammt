@@ -1,10 +1,10 @@
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
-import passport from './config/passport.ts';
+import passport from './config/passport';
 import connectDB from './db.js';
-import cbRoutes from './routes/cookBookRoutes.ts';
-import authRoute from './routes/authRoutes.ts';
+import cbRoutes from './routes/cookBookRoutes';
+import authRoute from './routes/authRoutes';
 
 const app = express();
 const port = 3000;
