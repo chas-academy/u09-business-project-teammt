@@ -48,6 +48,20 @@ router.get('/user', (req, res) => {
   }
 });
 
+router.get('/check', (req, res) => {
+  if (req.user) {
+    res.json({
+      authenticated: true,
+      user: req.user
+    });
+  } else {
+    res.json({
+      authenticated: false,
+      user: null
+    });
+  }
+});
+
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {

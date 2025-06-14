@@ -14,10 +14,13 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log('🔍 Google Strategy - Profile ID:', profile.id);
+
         // Check if user already exists
         let user = await User.findOne({ googleId: profile.id });
 
         if (user) {
+          console.log('Existing user found:', user._id);
           return done(null, user);
         }
 
@@ -29,8 +32,10 @@ passport.use(
           picture: profile.photos?.[0]?.value || '',
         });
 
+        console.log('New user created:', user._id);
         return done(null, user);
       } catch (error) {
+        console.log('Google Strategy error:', error);
         return done(error, false);
       }
     }
@@ -38,14 +43,23 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done) => {
+  console.log('SERIALIZE USER ID:', user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser(async (id: string, done) => {
+  console.log('🔍 DESERIALIZE USER ID:', id);
   try {
     const user = await User.findById(id);
-    done(null, user);
+    if (user) {
+      console.log('User found during deserialize:', user.email);
+      done(null, user);
+    } else {
+      console.log('No user found with ID:', id);
+      done(null, false);
+    }
   } catch (error) {
+    console.log('DESERIALIZE ERROR:', error);
     done(error, false);
   }
 });
