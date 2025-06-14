@@ -75,9 +75,10 @@ function App() {
 
     try {
       const data = await cookbookApi.getAll();
-      setCookbooks(data);
+      setCookbooks(data || []);
     } catch (err) {
       console.log('Error loading cookbooks:', err.message);
+       setCookbooks([]);
     }
   }
 
