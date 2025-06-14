@@ -5,6 +5,7 @@ import passport from './config/passport';
 import connectDB from './db.js';
 import cbRoutes from './routes/cookBookRoutes';
 import authRoute from './routes/authRoutes';
+import MongoStore from 'connect-mongo';
 
 const app = express();
 const port = 3000;
@@ -22,6 +23,9 @@ app.use(session({
   secret: "verySecretySecret",
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+     mongoUrl: (process.env.MONGO_URL as string);
+    }),
   cookie: {
     sameSite: 'none' as const,
    secure: true,
@@ -74,6 +78,15 @@ app.get('/reset-session', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('connect.sid');
     res.json({ message: 'Session cleared. Please login again.' });
+  });
+});
+
+app.get('/debug-sessions', (req, res) => {
+  const store = req.sessionStore;
+  res.json({
+    currentSessionID: req.sessionID,
+    hasSession: !!req.session,
+    sessionData: req.session
   });
 });
 
