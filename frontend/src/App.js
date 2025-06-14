@@ -15,6 +15,14 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authToken = urlParams.get('authToken');
+
+    if (authToken) {
+      // Store token and clean URL
+      localStorage.setItem('authToken', authToken);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     fetchUser();
   }, []);
 
@@ -27,17 +35,18 @@ function App() {
 
   const fetchUser = async () => {
     try {
+     const authToken = localStorage.getItem('authToken');
     const baseUrl = process.env.REACT_APP_BE_URL || 'http://localhost:3000';
         const fullUrl = `${baseUrl}/auth/user`;
 
-        console.log('🔍 Environment variable REACT_APP_BE_URL:', process.env.REACT_APP_BE_URL);
-        console.log('🔍 Base URL being used:', baseUrl);
-        console.log('🔍 Full fetch URL:', fullUrl);
 
-        const res = await fetch(fullUrl, {
-          credentials: "include"
-        });
-      const data = await res.json();
+
+       const res = await fetch(`${baseUrl}/auth/verify-token`, {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ token: authToken })
+           });
+           const data = await res.json();
       setUser(data);
     } catch (error) {
       console.log('Error fetching user:', error);
