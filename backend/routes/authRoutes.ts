@@ -13,8 +13,19 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: process.env.FE_URL || 'http://localhost:3001' }),
   (req, res) => {
+       console.log('🔍 OAuth callback hit');
+          console.log('🔍 User:', req.user);
+          console.log('🔍 Session ID:', req.sessionID);
+          console.log('🔍 Session exists:', !!req.session);
     // Successful authentication, redirect to frontend
-    res.redirect(process.env.FE_URL || 'http://localhost:3001');
+    req.session.save((err) => {
+         if (err) {
+           console.log('❌ Session save error:', err);
+         } else {
+           console.log('✅ Session saved successfully');
+         }
+         res.redirect(process.env.FE_URL || 'http://localhost:3001');
+       });
   }
 );
 
