@@ -23,10 +23,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: 'none' as const,    // Allow cross-site cookies
-    secure: true,                 // Required for sameSite: 'none' (HTTPS only)
-    httpOnly: true,               // Security: prevent JS access
-    maxAge: 24 * 60 * 60 * 1000  // 24 hours
+    sameSite: 'none' as const,
+   secure: true,
+   httpOnly: false, // So you can see it in DevTools
+   maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
