@@ -23,6 +23,13 @@ router.get('/google/callback',
            console.log('❌ Session save error:', err);
          } else {
            console.log('✅ Session saved successfully');
+           res.cookie('connect.sid', `s:${req.sessionID}`, {
+                     sameSite: 'none',
+                     secure: true,
+                     httpOnly: false,
+                     maxAge: 24 * 60 * 60 * 1000,
+                     domain: '.onrender.com'  // Allow cross-subdomain
+                   });
          }
          res.redirect(process.env.FE_URL || 'http://localhost:3001');
        });
