@@ -23,10 +23,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-      sameSite: 'none',    // Allow cross-site cookies
-      secure: true,        // Required for sameSite: 'none' (HTTPS only)
-      httpOnly: true,      // Security: prevent JS access
-      maxAge: 24 * 60 * 60 * 1000  // 24 hours
+    sameSite: 'none' as const,    // Allow cross-site cookies
+    secure: true,                 // Required for sameSite: 'none' (HTTPS only)
+    httpOnly: true,               // Security: prevent JS access
+    maxAge: 24 * 60 * 60 * 1000  // 24 hours
+  }
 }));
 
 app.use(passport.initialize());
@@ -49,9 +50,28 @@ app.get('/debug-config', (req, res) => {
   });
 });
 
+app.get('/test-cookie-settings', (req, res) => {
+  res.cookie('test-cookie', 'test-value', {
+    sameSite: 'none' as const,
+    secure: true,
+    httpOnly: false, // So you can see it in DevTools
+    maxAge: 24 * 60 * 60 * 1000
+  });
+  res.json({ message: 'Test cookie set with sameSite: none, secure: true' });
+});
+
+app.get('/reset-session', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Session cleared. Please login again.' });
+  });
+});
+
 app.use('/api/v1/cookbook', cbRoutes);
 app.use('/auth', authRoute);
 
 app.listen(port, () => {
   console.log(`server is running on http://localhost:${port}`);
 });
+
+export default app;
