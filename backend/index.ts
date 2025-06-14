@@ -25,7 +25,7 @@ app.use(session({
   cookie: {
     sameSite: 'none' as const,
    secure: true,
-   httpOnly: false, // So you can see it in DevTools
+   httpOnly: false,
    maxAge: 24 * 60 * 60 * 1000
   }
 }));
@@ -37,6 +37,16 @@ app.get('/', (req, res) => {
   res.send('hello express!');
 });
 
+
+
+app.get('/create-session-test', (req, res) => {
+  req.session.testData = 'hello world';
+  res.json({
+    message: 'Session created',
+    sessionID: req.sessionID,
+    testData: req.session.testData
+  });
+});
 app.get('/debug-config', (req, res) => {
   res.json({
     sessionConfig: {
