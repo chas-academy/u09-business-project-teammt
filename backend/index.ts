@@ -36,6 +36,19 @@ app.get('/', (req, res) => {
   res.send('hello express!');
 });
 
+app.get('/debug-config', (req, res) => {
+  res.json({
+    sessionConfig: {
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000
+    },
+    environment: process.env.NODE_ENV,
+    frontendUrl: process.env.FE_URL
+  });
+});
+
 app.use('/api/v1/cookbook', cbRoutes);
 app.use('/auth', authRoute);
 
