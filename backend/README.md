@@ -277,5 +277,6 @@ GOOGLE_CLIENT_ID=123...              # Google OAuth client ID
 GOOGLE_CLIENT_SECRET=abc...          # Google OAuth client secret
 BE_URL=https://your-backend.com      # Backend URL for OAuth callbacks
 FE_URL=https://your-frontend.com     # Frontend URL for redirects
+
 ```
 
