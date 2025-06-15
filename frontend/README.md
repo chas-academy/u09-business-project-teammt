@@ -1,70 +1,124 @@
-# Getting Started with Create React App
+# My Cookbooks - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based recipe management application that allows users to search, save, and organize their favorite recipes using Google OAuth authentication.
 
-## Available Scripts
+## 🍳 What Problem Does This Solve?
 
-In the project directory, you can run:
+Many food enthusiasts struggle to keep track of recipes they find online. This application solves that problem by providing a personal digital cookbook where users can:
 
-### `npm start`
+- Search thousands of recipes from the Spoonacular API
+- Create custom cookbook collections
+- Save and organize favorite recipes
+- Access their personal recipe collection anywhere
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Installation Instructions
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
 
-### `npm test`
+### Setup Steps
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd frontend
+   ```
 
-### `npm run build`
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Install React Router**
+   ```bash
+   npm install react-router-dom
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Environment Setup**
+   Create a `.env` file in the frontend root:
+   ```env
+   REACT_APP_BE_URL=https://cookbook-api-backend.onrender.com
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. **Start development server**
+   ```bash
+   npm start
+   ```
 
-### `npm run eject`
+The application will open at `http://localhost:3001`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📖 Example Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 1. **Authentication**
+- Click "Login with Google" to authenticate using Google OAuth
+- Once logged in, you'll see your personal dashboard
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. **Search Recipes**
+- Use the search bar to find recipes (e.g., "chicken pasta", "chocolate cake")
+- Browse through search results with images and titles
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 3. **Create Cookbooks**
+- Click "+ Add New Cookbook" to create a new collection
+- Give it a name and description (e.g., "Sunday Dinners", "Quick Lunches")
 
-## Learn More
+### 4. **Save Recipes**
+- From search results, select a cookbook from the dropdown
+- Click "Add" to save the recipe to your chosen cookbook
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 5. **Manage Your Collection**
+- View all your cookbooks on the main page
+- Click "Details" on any recipe to see full ingredients and instructions
+- Remove recipes from cookbooks as needed
+- Delete entire cookbooks when no longer needed
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 6. **Profile Management**
+- Visit your Profile page to see stats and cookbook overview
+- View total cookbooks and saved recipes count
 
-### Code Splitting
+## 🔐 Google OAuth Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This application uses Google OAuth 2.0 for secure authentication:
 
-### Analyzing the Bundle Size
+- **Secure Login**: No passwords to remember - use your existing Google account
+- **Personal Data**: Each user's cookbooks and recipes are private and isolated
+- **Token-based**: Uses JWT tokens for secure API communication
+- **Automatic Redirect**: Seamless login flow with redirect back to the app
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The OAuth flow is handled by:
+1. Frontend redirects to Google OAuth consent screen
+2. User authorizes the application
+3. Google redirects back with authorization code
+4. Backend exchanges code for user info and creates session
+5. Frontend receives authentication token for API calls
 
-### Making a Progressive Web App
+## 🛠️ Technology Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **React.js** - Frontend framework
+- **React Router** - Client-side routing
+- **CSS3** - Styling and layout
+- **Fetch API** - HTTP requests
+- **Google OAuth 2.0** - Authentication
+- **Spoonacular API** - Recipe data source
 
-### Advanced Configuration
+## 📱 Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Responsive Design** - Works on desktop and mobile devices
+- **Search Integration** - Real-time recipe search via Spoonacular API
+- **Personal Cookbooks** - Create and manage custom recipe collections
+- **Recipe Details** - View full ingredients, instructions, and nutritional info
+- **User Profiles** - Personal dashboard with statistics and cookbook overview
 
-### Deployment
+## 🌐 Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Live Application**: https://u09-frontend-onrender.com
 
-### `npm run build` fails to minify
+The frontend is deployed on Render and automatically builds from the main branch.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📚 Related Documentation
+
+- [Backend Repository](../backend/) - Node.js/Express API server
+- [Spoonacular API Documentation](https://spoonacular.com/food-api/docs)
+- [React Router Documentation](https://reactrouter.com/)
+- [Google OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)
+
