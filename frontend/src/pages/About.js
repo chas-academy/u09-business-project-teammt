@@ -59,50 +59,6 @@ const About = () => {
           </div>
         </div>
       </div>
-
-      <div style={{
-        backgroundColor: 'white',
-        padding: '30px',
-        borderRadius: '12px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        marginBottom: '30px'
-      }}>
-        <h2 style={{ color: '#333', marginTop: 0 }}>🛠️ Technology Stack</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-          <div>
-            <h4 style={{ color: '#007bff', margin: '0 0 10px 0' }}>Frontend</h4>
-            <ul style={{ color: '#666', lineHeight: '1.6' }}>
-              <li>React.js</li>
-              <li>React Router</li>
-              <li>CSS3</li>
-              <li>Spoonacular API</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 style={{ color: '#28a745', margin: '0 0 10px 0' }}>Backend</h4>
-            <ul style={{ color: '#666', lineHeight: '1.6' }}>
-              <li>Node.js & Express</li>
-              <li>MongoDB & Mongoose</li>
-              <li>Passport.js (Google OAuth)</li>
-              <li>RESTful API</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div style={{
-        backgroundColor: '#f8f9fa',
-        padding: '30px',
-        borderRadius: '12px',
-        border: '2px solid #e9ecef',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ color: '#333', marginTop: 0 }}>👥 Development Team</h2>
-        <p style={{ color: '#666', fontSize: '16px', margin: 0 }}>
-          Built as a course project demonstrating full-stack web development skills including React, Node.js, MongoDB, and OAuth authentication.
-        </p>
-      </div>
     </div>
   );
 };
